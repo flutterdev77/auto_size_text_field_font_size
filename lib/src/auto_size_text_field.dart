@@ -12,6 +12,8 @@ class AutoSizeTextField extends StatefulWidget {
   /// part of the character counter is shown.
   static const int noMaxLength = -1;
 
+  final ValueChanged<double>? onFontSizeCalculated;
+
   /// Sets the key for the resulting [TextField] widget.
   ///
   /// This allows you to find the actual `Text` widget built by `AutoSizeTextField`.
@@ -435,6 +437,7 @@ class AutoSizeTextField extends StatefulWidget {
   /// closest enclosing [DefaultTextStyle].
   const AutoSizeTextField({
     Key? key,
+    this.onFontSizeCalculated,
     this.fullwidth = true,
     this.textFieldKey,
     this.style,
@@ -672,6 +675,11 @@ class _AutoSizeTextFieldState extends State<AutoSizeTextField> {
       fontSize = right * userScale * widget.stepGranularity;
     } else {
       fontSize = presetFontSizes[right] * userScale;
+    }
+
+    // Call the callback if it's provided
+    if (widget.onFontSizeCalculated != null) {
+      widget.onFontSizeCalculated!(fontSize);
     }
 
     return [fontSize, lastValueFits];
